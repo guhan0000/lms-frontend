@@ -1,6 +1,14 @@
-import React from "react";
-
+import React, { useEffect } from "react";
+import api from "../services/api";
 const Home = () => {
+  const apiFetch = async () => {
+    const response = await api.get("/swagger-ui/index.html");
+    console.log(response);
+  };
+  useEffect(() => {
+    apiFetch();
+  }, []);
+
   return (
     <div className="container mt-4">
       <h2 className="mt-5">Home</h2>
