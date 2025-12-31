@@ -3,6 +3,7 @@ import "./App.css";
 // import UserDashboard from "./pages/UserDashboard";
 // import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
+import { AuthProvider } from "./context/AuthContext";
 import SignUp from "./pages/SignUp";
 // import AxioDemo from "./demoTests/AxioDemo";
 // import Home from "./pages/Home";
@@ -10,10 +11,10 @@ import SignUp from "./pages/SignUp";
 function App() {
   return (
     <>
-      {/* <AdminDashboard /> */}
-      <Navbar />
-      <SignUp/>
-     
+      <AuthProvider>
+        <Navbar />
+        <SignUp />
+      </AuthProvider>
     </>
   );
 }

@@ -1,19 +1,14 @@
-import { useState } from "react";
-import api from "../services/api";
+import { useContext, useState } from "react";
+// import api from "../services/api";
+import { AuthContext } from "../context/AuthContext";
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { register } = useContext(AuthContext);
 
   const handleSubmit = async (name, email, password) => {
-    try {
-      const member = { name, email, password };
-
-      await api.post("/api/users/register", member);
-    } catch (err) {
-      console.log(err.message);
-    }
-    
+    register({ name, email, password });
   };
   return (
     <div className="container mt-5 pt-5">
@@ -23,8 +18,13 @@ const SignUp = () => {
             <div className="card-header">Signup</div>
             <div className="card-body">
               <form
-                onSubmit={() => {
+                onSubmit={(e) => {
+                  e.preventDefault();
                   handleSubmit(name, email, password);
+                  setEmail("");
+                  setPassword("");
+                  setName("");
+                  // alert("User Added");
                 }}
               >
                 <div className="mb-3">
@@ -36,6 +36,7 @@ const SignUp = () => {
                     onChange={(e) => {
                       setName(e.target.value);
                     }}
+                    value={name}
                   />
                 </div>
                 <div className="mb-3">
@@ -47,6 +48,7 @@ const SignUp = () => {
                     onChange={(e) => {
                       setEmail(e.target.value);
                     }}
+                    value={email}
                   />
                 </div>
                 <div className="mb-3">
@@ -58,6 +60,7 @@ const SignUp = () => {
                     onChange={(e) => {
                       setPassword(e.target.value);
                     }}
+                    value={password}
                   />
                 </div>
                 <button type="submit" className="btn btn-primary">
