@@ -1,9 +1,11 @@
 import React, { createContext, useEffect, useState } from "react";
+
 import api from "../services/api";
 
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -13,7 +15,10 @@ export const AuthProvider = ({ children }) => {
         .catch(() => {
           localStorage.removeItem("token");
           setUser(null);
+          setLoading(false);
         });
+    } else {
+      setLoading(false);
     }
   }, []);
   const register = async (member) => {
@@ -32,7 +37,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
   return (
-    <AuthContext.Provider value={{ register, login, user, logout }}>
+    <AuthContext.Provider value={{ register, login, user, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
