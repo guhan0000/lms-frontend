@@ -1,14 +1,16 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const { login, user, logout } = useContext(AuthContext);
-
+  const { login, user } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const handleSubmit = async (email, password) => {
     try {
       await login(email, password);
+      navigate("/");
     } catch (err) {
       console.log("invalid credentials");
     }
@@ -53,13 +55,6 @@ const Login = () => {
                 {user && <p>Welcome {user.name}</p>}
                 <button type="submit" className="btn btn-primary">
                   Login
-                </button>
-                <button
-                  className="btn btn-secondary"
-                  type="button"
-                  onClick={logout}
-                >
-                  LogOut
                 </button>
               </form>
             </div>

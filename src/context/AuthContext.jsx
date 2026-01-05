@@ -1,9 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
         });
     } else {
       setLoading(false);
+      navigate("/login");
     }
   }, []);
   const register = async (member) => {
@@ -30,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem("token", token);
     const meResponse = await api.get("/api/users/me");
     setUser(meResponse.data);
-    console.log(meResponse.data);
+    // console.log(meResponse.data);
   };
   const logout = () => {
     localStorage.removeItem("token");

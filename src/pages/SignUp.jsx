@@ -1,14 +1,17 @@
 import { useContext, useState } from "react";
 // import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { register } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (name, email, password) => {
     register({ name, email, password });
+    navigate("/login");
   };
   return (
     <div className="container mt-5 pt-5">

@@ -6,21 +6,18 @@ const Home = () => {
   //   const response = await api.get("/swagger-ui/index.html");
   //   console.log(response);
   // };
-  const { user, loading } = useContext(AuthContext);
-  const [error, setError] = useState("");
+  const { user } = useContext(AuthContext);
   const [books, setBooks] = useState([]);
   const fetchBooks = async () => {
     try {
       const response = await api.get("/api/books/get/all");
       setBooks(response.data);
     } catch (error) {
-      setError(error.message);
+      console.log("error fetching books", error);
     }
   };
   const handleBorrow = async (id) => {
     try {
-      console.log(user.role);
-
       await api.post(`/api/issues/issue/${id}`);
       alert("Book borrowed successfully");
       fetchBooks();
