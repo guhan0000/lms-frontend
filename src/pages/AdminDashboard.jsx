@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../services/api";
 
 const AdminDashboard = () => {
+  const [history, setHistory] = useState([]);
+  const fetchAdminHistory = async () => {
+    try {
+      const response = await api.get("/api/issues/admin/history");
+      setHistory(response.data);
+    } catch (error) {
+      console.log("error in getting admin history", error);
+    }
+  };
+  useEffect(() => {
+    fetchAdminHistory();
+  }, []);
   return (
     <div className="container mt-4">
       <h2>Admin Dashboard</h2>
@@ -24,14 +37,16 @@ const AdminDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>#1</td>
-              <td>#asd</td>
-              <td>#afnsdlfn</td>
-              <td>#kls</td>
-              <td>#nglds</td>
-              <td>#gnlfkdng</td>
-            </tr>
+            {history.map((issue) => (
+              <tr key={issue.issueId}>
+                <td>{issue.issueId}</td>
+                <td>{issue.book.bookId}</td>
+                <td>{issue.user.email}</td>
+                <td>{issue.issueDate}</td>
+                <td>{issue.returnDate}</td>
+                <td>{issue.status}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

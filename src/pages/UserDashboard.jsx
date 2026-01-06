@@ -1,6 +1,18 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import api from "../services/api";
 const UserDashboard = () => {
+  const [history, setHistory] = useState([]);
+  const getUserHistory = async () => {
+    try {
+      const response = await api.get("/api/issues/history/");
+      setHistory(response.data);
+    } catch (error) {
+      console.log("error in getting user history", error);
+    }
+  };
+  useEffect(() => {
+    getUserHistory();
+  }, []);
   return (
     <div className="container mt-2">
       <h2>My Dashboard</h2>
@@ -17,7 +29,17 @@ const UserDashboard = () => {
               <th>Action</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            {history.map((issue, index) => (
+              <tr key={index}>
+                <td>{issue.book.title}</td>
+                <td>{issue.book.author}</td>
+                <td>{issue.issueDate}</td>
+                <td>{issue.returnDate}</td>
+                <td>{issue.status}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
