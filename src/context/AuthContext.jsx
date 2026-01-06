@@ -12,7 +12,11 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       api
         .get("/api/users/me")
-        .then((response) => setUser(response.data))
+        .then((response) => {
+          setUser(response.data);
+          setLoading(false);
+        })
+
         .catch(() => {
           localStorage.removeItem("token");
           setUser(null);
@@ -20,7 +24,7 @@ export const AuthProvider = ({ children }) => {
         });
     } else {
       setLoading(false);
-      navigate("/login");
+      // navigate("/login");
     }
   }, []);
   const register = async (member) => {

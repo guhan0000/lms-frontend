@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import api from "../services/api";
 import { AuthContext } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 const Home = () => {
   // const apiFetch = async () => {
   //   const response = await api.get("/swagger-ui/index.html");
   //   console.log(response);
   // };
+  const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const [books, setBooks] = useState([]);
   const fetchBooks = async () => {
@@ -26,7 +28,9 @@ const Home = () => {
       alert("Can't Borrow Book");
     }
   };
-  const handleEdit = () => {};
+  const handleEdit = (id) => {
+    navigate(`/edit-book/${id}`);
+  };
   const handleDelete = async (id) => {
     try {
       if (window.confirm("are you sure want to delete")) {
@@ -81,7 +85,10 @@ const Home = () => {
                   <div className="d-felx justify-content-center align-items-center">
                     <button
                       className="btn btn-secondary btn-sm me-2"
-                      onClick={handleEdit}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handleEdit(book.bookId);
+                      }}
                     >
                       Edit
                     </button>
