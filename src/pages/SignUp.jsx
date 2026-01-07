@@ -6,12 +6,18 @@ const SignUp = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { register } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleSubmit = async (name, email, password) => {
-    register({ name, email, password });
-    navigate("/login");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await register({ name, email, password });
+      navigate("/login");
+    } catch (error) {
+      setError("Registration Failed");
+    }
   };
   return (
     <div className="container mt-5 pt-5">
@@ -20,10 +26,10 @@ const SignUp = () => {
           <div className="card">
             <div className="card-header">Signup</div>
             <div className="card-body">
+              {error && <div className="alert alert-danger">{error}</div>}
               <form
                 onSubmit={(e) => {
-                  e.preventDefault();
-                  handleSubmit(name, email, password);
+                  handleSubmit(e);
                   setEmail("");
                   setPassword("");
                   setName("");

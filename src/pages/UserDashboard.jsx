@@ -13,6 +13,17 @@ const UserDashboard = () => {
   useEffect(() => {
     getUserHistory();
   }, []);
+  const handleReturn = async (id) => {
+    try {
+      // if (window.confirm("are u sure want to return this book?")) {
+      await api.post(`/api/issues/return/${id}`);
+      alert("book returned successfully");
+      getUserHistory();
+      // }
+    } catch (error) {
+      console.log("error in returning book", error);
+    }
+  };
   return (
     <div className="container mt-2">
       <h2>My Dashboard</h2>
@@ -37,6 +48,18 @@ const UserDashboard = () => {
                 <td>{issue.issueDate}</td>
                 <td>{issue.returnDate}</td>
                 <td>{issue.status}</td>
+                <td>
+                  {issue.status === "ISSUED" && (
+                    <button
+                      className="btn btn-sm btn-warning"
+                      onClick={() => {
+                        handleReturn(issue.book.bookId);
+                      }}
+                    >
+                      Return
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

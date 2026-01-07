@@ -7,12 +7,14 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const handleSubmit = async (email, password) => {
     try {
       await login(email, password);
       navigate("/");
     } catch (err) {
       console.log("invalid credentials");
+      setError("Invalid Credentials");
     }
   };
   return (
@@ -22,6 +24,7 @@ const Login = () => {
           <div className="card">
             <div className="card-header">Login</div>
             <div className="card-body">
+              {error && <div className="alert alert-danger">{error}</div>}
               <form
                 onSubmit={(e) => {
                   e.preventDefault();
